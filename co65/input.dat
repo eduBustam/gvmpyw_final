@@ -1,0 +1,4 @@
+noise_cut	      10.2
+ftol		        1.0e-12
+t_telescope	2
+random_probability	1.0
