@@ -301,6 +301,8 @@ cdef class FiPY:
         del self.fi
     def configure(self,int A,int B,int C):
         self.fi.configure(A,B,C)
+    def setPenalizationFactor(self,float A):
+        self.fi.setPenalizationFactor(A)
 
 cdef class OptimizatorPY:
     cdef Optimizator *op

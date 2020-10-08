@@ -43,7 +43,7 @@ def settest():
     M87=["./gpuvmem","-s","0","-i","M87/SR1_M87_2017_101_hi_hops_netcal_StokesI.selfcal.LLRR.ms","-o","M87/residuals.ms","-O","M87/mod_out.fits","-m","M87/mod_in_0.fits","-I","M87/input.dat","-p","M87/mem/","-X","16","-Y","16","-V","256","--verbose","--print-images","-z","0.001","-Z","5e-6,5e-5","-t","500000000"]
     M872=["./gpuvmem","-s","0","-i","M87/SR1_M87_2017_101_hi_hops_netcal_StokesI.selfcal.LLRR.ms","-o","M87/residuals.ms","-O","M87/mod_out.fits","-m","M87/mod_in_0.fits","-I","M87/input.dat","-p","M87/mem/","-X","16","-Y","16","-V","256","--verbose","--print-images","-z","0.001","-Z","5e-6,5e-5","-t","500000000"]
     selfcalband9=["./gpuvmem","-i","selfcalband9/hd142_b9cont_self_tav.ms","-o","selfcalband9/residuals.ms","-O","selfcalband9/mod_out.fits","-m","selfcalband9/mod_in_0.fits","-I","selfcalband9/input.dat","-p","selfcalband9/mem/","-X","16","-Y","16","-V","256","--verbose","-z","0.001","-Z","0.05,0.0","-t","500000000","-g","1","--print-images"]
-    sy.configure(co65)
+    sy.configure(FREQ78)
     cg.setObjectiveFunction(of)
     sy.setOptimizator(cg)
 
@@ -56,7 +56,7 @@ def settest():
     chi2.configure(-1,0,0)
     e.configure(0,0,0)
     l.configure(1,0,0)
-    
+    e.setPenalizationFactor(0.01)
     of.addFi(chi2)
     of.addFi(e)
     of.addFi(l)
