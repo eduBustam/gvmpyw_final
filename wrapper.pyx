@@ -106,6 +106,7 @@ cdef extern from "gpuvmem/include/wraputil.cuh":
     Io * wrapIo()
     Fi * wrapFi(int id)
     int checkRequirements()
+
 #Classes
 cdef extern from "gpuvmem/include/framework.cuh":
     cdef cppclass VirtualImageProcessor:
@@ -187,75 +188,9 @@ cdef extern from "gpuvmem/include/framework.cuh":
         void setImage(Image *i)
         void setOptimizator(Optimizator* op)
         void setIoHandler(Io* io)
-
-    #clases Fi
-    cdef cppclass PyChi2:
-        void configure(int,int,int)
-        void setPenalizationFactor(float p)
-        float getPenalizationFactor()        
-        float calcFi(float *p)
-        void calcGi(float *p, float *xi)
-        
-    cdef cppclass PyEntropy:
-        void configure(int,int,int)
-        float calcFi(float *p)
-        void setPenalizationFactor(float p)
-        float getPenalizationFactor()
-        void calcGi(float *p, float *xi)
-
-    cdef cppclass PyLaplacian:
-        void configure(int,int,int)
-        float calcFi(float *p)
-        void calcGi(float *p, float *xi)
-        void setPenalizationFactor(float p)
-        float getPenalizationFactor()
-    cdef cppclass PyIo:
-        PyIo()
-        MSData IocountVisibilities(char *MS_name, Field *&fields, int ) 
-        canvasVariables IoreadCanvas(char *canvas_name, fitsfile *&canvas, float , int , int ) 
-        void IoreadMS(char *MS_name, Field *fields, MSData data, bool , bool , float ) 
-        void IowriteMS(char *infile, char *outfile, Field *fields, MSData data, float , bool , bool , bool , int ) 
-        void IocloseCanvas(fitsfile *canvas) 
-        void IoPrintImage(float *I, fitsfile *canvas, char *path, char *name_image, char *units, int , int , float , long M, long N)
-        void IoPrintImageIteration(float *I, fitsfile *canvas, char *path, char *name_image, char *units, int , int , float , long M, long N) 
-        void IoPrintMEMImageIteration(float *I, char *name_image, char *units, int ) 
-        void IoPrintcuFFTComplex(cufftComplex *I, fitsfile *canvas, char *out_image, char *mempath, int , float , long , long , int )
-        void setPrintImagesPath(char * pip)
-
-    cdef cppclass PyObjectiveFunction:
-        PyObjectiveFunction()
-        void addFi(Fi *fi)
-        float calcFunction(float *p)
-        void calcGradient(float *p, float *xi)
-        void restartDPhi()
-        void copyDphiToXi(float *xi)
-        void setN(long N)
-        void setM(long M)
-        void setImageCount(int)
-        void setIo(PyIo *i)
-        void setPrintImages(int)
-        void setIoOrderIterations(void (*func)(float *I, PyIo *io))
-        void configure(long N, long M, int I)
-
-    cdef cppclass PySynthesizer:
-        PySynthesizer() except +
-        void run()
-        void setOutPut(char * FileName)
-        void setDevice()
-        void unSetDevice()
-        void setIoHandler(PyIo* io)
-        void configure(int argc, char **argv)
-        void applyFilter(Filter *filter)
-        Image *getImage()
-        void setImage(Image *i)
-        void setOptimizator(PyOptimizator* op)
-
-    cdef cppclass PyOptimizator:
-        void setImage(Image *image)
-        void setObjectiveFunction(PyObjectiveFunction *of)
-        void setFlag(int flag)
-        PyObjectiveFunction* getObjectiveFuntion()
-
+        void setGriddingKernel(CKernel *ckernel)
+    cdef cppclass CKernel:
+        pass
 
 cdef class SynthesizerPY:
     cdef Synthesizer *synt
@@ -355,34 +290,6 @@ cdef class Py_Image:
 def pyCheck():
     return checkRequirements()
 
-
-
-
-cdef class PyTest:
-    cdef ClasePrueba *c_test
-
-    def __cinit__(self, int a, int b):
-        self.c_test = new ClasePrueba(a,b)
-
-    def __dealloc__(self):
-        del self.c_test
-
-    def get_mult(self):
-        return self.c_test.mult()
-
-    def py_getA(self):
-        return self.c_test.getA()
-    def py_setA(self,int a):
-        self.c_test.setA(a)
-  
-
-cdef extern from "gpuvmem/include/framework.cuh":
-    cdef cppclass ClasePrueba:
-        int val
-        ClasePrueba(int,int) except +
-        int mult()
-        int getA()
-        void setA(int)
 
 
 

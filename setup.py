@@ -44,7 +44,8 @@ def locate_cuda():
 
     cudaconfig = {'home': home, 'nvcc': nvcc,
                   'include': pjoin(home, 'include'),
-                  'lib64': pjoin(home, 'lib64')}
+                  'lib64': pjoin(home, 'lib64'),
+                  'samples': pjoin(home,'samples/common/inc')}
     for k, v in iter(cudaconfig.items()):
         if not os.path.exists(v):
             raise EnvironmentError('The CUDA %s path could not be '
@@ -60,14 +61,16 @@ except AttributeError:
     numpy_include = numpy.get_numpy_include()
 
 CUDA = locate_cuda()
+print("Esto es:",CUDA)
 CASA = 'usr/local/lib'
 ext = Extension('gvmpyw',
         sources =  ['wrapper.pyx'],
         library_dirs = ['gpuvmem/build/'],
         libraries = ['gpu_lib'],
         language = 'c++',
+        #extra_compile_args=["-std=c++17", "-D_FORCE_INLINES", "-w","-O3"],
         #runtime_library_dirs = [CUDA['lib64']],
-        include_dirs = ["/usr/local/include/casacore",CUDA['include'],'gpuvmem/include']
+        include_dirs = ["/usr/local/include/casacore",CUDA['include'],'gpuvmem/include',CUDA['samples']]
         )
 
 setup(
