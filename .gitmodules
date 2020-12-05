@@ -1,3 +1,0 @@
-[submodule "gpuvmem"]
-	path = gpuvmem
-	url = https://github.com/miguelcarcamov/gpuvmem
